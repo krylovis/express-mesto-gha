@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const { PORT = 3000 } = process.env;
 
-const users = require('./routes/users');
-const cards = require('./routes/cards');
+const usersRoutes = require('./routes/usersRoutes');
+const cardsRoutes = require('./routes/cardsRoutes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -23,8 +23,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/users', users);
-app.use('/cards', cards);
+app.use('/users', usersRoutes);
+app.use('/cards', cardsRoutes);
 
 // app.use(express.static(path.join(__dirname, 'public')));
 app.listen(PORT, () => {
