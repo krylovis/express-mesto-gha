@@ -28,14 +28,14 @@ module.exports.getUserById = (req, res) => {
         res.status(404).send({ message: USER_NOT_FOUND });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send(users))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(500).send({ message: 'Ошибка по умолчанию' }));
 };
 
 module.exports.updateUser = (req, res) => {
@@ -52,7 +52,7 @@ module.exports.updateUser = (req, res) => {
         res.status(400).send({ message: INVALID_USER_UPDATE });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -70,6 +70,6 @@ module.exports.updateAvatar = (req, res) => {
         res.status(400).send({ message: INVALID_AVATAR_DATA });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };

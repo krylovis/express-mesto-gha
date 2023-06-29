@@ -9,7 +9,7 @@ module.exports.getCards = (req, res) => {
   Cards.find({})
     .populate('owner')
     .then((cards) => res.send(cards))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(500).send({ message: 'Ошибка по умолчанию' }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -23,7 +23,7 @@ module.exports.createCard = (req, res) => {
         res.status(400).send({ message: INVALID_CARD_DATA });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -35,7 +35,7 @@ module.exports.deleteCard = (req, res) => {
         res.status(404).send({ message: CARD_NOT_FOUND });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -55,7 +55,7 @@ module.exports.likeCard = (req, res) => {
         res.status(400).send({ message: INVALID_LIKES_DATA });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -75,6 +75,6 @@ module.exports.dislikeCard = (req, res) => {
         res.status(400).send({ message: INVALID_LIKES_DATA });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
