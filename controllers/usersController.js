@@ -16,7 +16,7 @@ module.exports.createUser = (req, res) => {
         res.status(400).send({ message: INVALID_USER_DATA });
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
