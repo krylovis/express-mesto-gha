@@ -48,11 +48,11 @@ module.exports.likeCard = (req, res) => {
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(404).send({ message: CARD_NOT_FOUND });
+        res.status(400).send({ message: CARD_NOT_FOUND });
         return;
       }
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: INVALID_LIKES_DATA });
+        res.status(404).send({ message: INVALID_LIKES_DATA });
         return;
       }
       res.status(500).send({ message: 'Ошибка по умолчанию' });
