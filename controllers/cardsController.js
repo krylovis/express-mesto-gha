@@ -3,6 +3,7 @@ const {
   INVALID_CARD_DATA,
   INVALID_LIKES_DATA,
   CARD_NOT_FOUND,
+  CARD_NONEXISTENT,
 } = require('../utils/constants');
 
 module.exports.getCards = (req, res) => {
@@ -29,7 +30,10 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Cards.findByIdAndRemove(req.params.id)
-    .then((card) => res.send(card))
+    .then((card) => {
+      if (!card) return res.status(404).send({ message: CARD_NONEXISTENT });
+      return res.status(200).send(card);
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: CARD_NOT_FOUND });
@@ -45,7 +49,10 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.send(card))
+    .then((card) => {
+      if (!card) return res.status(404).send({ message: CARD_NONEXISTENT });
+      return res.status(200).send(card);
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: CARD_NOT_FOUND });
@@ -65,7 +72,10 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.send(card))
+    .then((card) => {
+      if (!card) return res.status(404).send({ message: CARD_NONEXISTENT });
+      return res.status(200).send(card);
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: CARD_NOT_FOUND });
