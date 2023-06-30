@@ -20,11 +20,8 @@ module.exports.createCard = (req, res) => {
   Cards.create({ name, link, owner: _id })
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: INVALID_CARD_DATA });
-        return;
-      }
-      res.status(500).send({ message: 'Ошибка по умолчанию' });
+      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_CARD_DATA });
+      return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -35,11 +32,8 @@ module.exports.deleteCard = (req, res) => {
       return res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: CARD_NOT_FOUND });
-        return;
-      }
-      res.status(500).send({ message: 'Ошибка по умолчанию' });
+      if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
+      return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -54,15 +48,9 @@ module.exports.likeCard = (req, res) => {
       return res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: CARD_NOT_FOUND });
-        return;
-      }
-      if (err.name === 'ValidationError') {
-        res.status(404).send({ message: INVALID_LIKES_DATA });
-        return;
-      }
-      res.status(500).send({ message: 'Ошибка по умолчанию' });
+      if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
+      if (err.name === 'ValidationError') return res.status(404).send({ message: INVALID_LIKES_DATA });
+      return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
 
@@ -77,14 +65,8 @@ module.exports.dislikeCard = (req, res) => {
       return res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(400).send({ message: CARD_NOT_FOUND });
-        return;
-      }
-      if (err.name === 'ValidationError') {
-        res.status(400).send({ message: INVALID_LIKES_DATA });
-        return;
-      }
-      res.status(500).send({ message: 'Ошибка по умолчанию' });
+      if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
+      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_LIKES_DATA });
+      return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
