@@ -1,8 +1,8 @@
-// const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const bodyParser = require('body-parser');
+
+const { PAGE_NOT_FOUND } = require('./utils/constants');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -25,8 +25,8 @@ app.use((req, res, next) => {
 
 app.use('/users', usersRoutes);
 app.use('/cards', cardsRoutes);
+app.use('*', (req, res) => res.status(404).send({ message: PAGE_NOT_FOUND }));
 
-// app.use(express.static(path.join(__dirname, 'public')));
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });

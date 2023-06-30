@@ -1,3 +1,5 @@
+module.exports.PAGE_NOT_FOUND = 'Страница не найдена';
+
 module.exports.INVALID_USER_DATA = 'Переданы некорректные данные при создании пользователя';
 module.exports.INVALID_USER_UPDATE = 'Переданы некорректные данные при обновлении профиля';
 module.exports.INVALID_AVATAR_DATA = ' Переданы некорректные данные при обновлении аватара';
