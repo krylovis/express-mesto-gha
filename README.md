@@ -2,6 +2,10 @@
 # Проект Mesto фронтенд + бэкенд
 
 
+## Ссылка на проект
+
+https://krylovis.github.io/express-mesto-gha/
+
 ## Директории
 
 `/routes` — папка с файлами роутера  
