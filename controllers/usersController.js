@@ -1,10 +1,7 @@
 const User = require('../models/user');
 const {
-  INVALID_USER_DATA,
-  INVALID_USER_UPDATE,
-  INVALID_AVATAR_DATA,
-  USER_NOT_FOUND,
-  USER_NONEXISTENT,
+  HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_NOT_FOUND,
 } = require('../utils/constants');
 
 module.exports.createUser = (req, res) => {
@@ -13,7 +10,7 @@ module.exports.createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_USER_DATA });
+      if (err.name === 'ValidationError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -21,11 +18,11 @@ module.exports.createUser = (req, res) => {
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
-      if (!user) return res.status(404).send({ message: USER_NONEXISTENT });
+      if (!user) return res.status(404).send({ message: HTTP_STATUS_NOT_FOUND });
       return res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') return res.status(400).send({ message: USER_NOT_FOUND });
+      if (err.name === 'CastError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -42,7 +39,7 @@ module.exports.updateUser = (req, res) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_USER_UPDATE });
+      if (err.name === 'ValidationError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -53,8 +50,8 @@ module.exports.updateAvatar = (req, res) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'CastError') return res.status(404).send({ message: USER_NOT_FOUND });
-      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_AVATAR_DATA });
+      if (err.name === 'CastError') return res.status(404).send({ message: HTTP_STATUS_NOT_FOUND });
+      if (err.name === 'ValidationError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };

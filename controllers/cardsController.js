@@ -1,8 +1,7 @@
 const Cards = require('../models/card');
 const {
-  INVALID_CARD_DATA,
-  CARD_NOT_FOUND,
-  CARD_NONEXISTENT,
+  HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_NOT_FOUND,
 } = require('../utils/constants');
 
 module.exports.getCards = (req, res) => {
@@ -19,7 +18,7 @@ module.exports.createCard = (req, res) => {
   Cards.create({ name, link, owner: _id })
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_CARD_DATA });
+      if (err.name === 'ValidationError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -27,11 +26,11 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   Cards.findByIdAndRemove(req.params.id)
     .then((card) => {
-      if (!card) return res.status(404).send({ message: CARD_NONEXISTENT });
+      if (!card) return res.status(404).send({ message: HTTP_STATUS_NOT_FOUND });
       return res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
+      if (err.name === 'CastError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -43,11 +42,11 @@ module.exports.likeCard = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      if (!card) return res.status(404).send({ message: CARD_NONEXISTENT });
+      if (!card) return res.status(404).send({ message: HTTP_STATUS_NOT_FOUND });
       return res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
+      if (err.name === 'CastError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -59,11 +58,11 @@ module.exports.dislikeCard = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      if (!card) return res.status(404).send({ message: CARD_NONEXISTENT });
+      if (!card) return res.status(404).send({ message: HTTP_STATUS_NOT_FOUND });
       return res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
+      if (err.name === 'CastError') return res.status(400).send({ message: HTTP_STATUS_BAD_REQUEST });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
