@@ -28,5 +28,6 @@ app.use('/cards', cardsRoutes);
 app.use('*', (req, res) => res.status(404).send({ message: PAGE_NOT_FOUND }));
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
 });
