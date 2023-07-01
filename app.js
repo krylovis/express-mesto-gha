@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 
 const { PAGE_NOT_FOUND } = require('./utils/constants');
 
@@ -10,8 +9,7 @@ const { PORT = 3000 } = process.env;
 const usersRoutes = require('./routes/usersRoutes');
 const cardsRoutes = require('./routes/cardsRoutes');
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
