@@ -11,7 +11,7 @@ module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
-    .then((user) => res.send(user))
+    .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_USER_DATA });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
@@ -42,7 +42,6 @@ module.exports.updateUser = (req, res) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'CastError') return res.status(404).send({ message: USER_NOT_FOUND });
       if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_USER_UPDATE });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
