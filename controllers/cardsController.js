@@ -1,7 +1,6 @@
 const Cards = require('../models/card');
 const {
   INVALID_CARD_DATA,
-  INVALID_LIKES_DATA,
   CARD_NOT_FOUND,
   CARD_NONEXISTENT,
 } = require('../utils/constants');
@@ -49,7 +48,6 @@ module.exports.likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
-      if (err.name === 'ValidationError') return res.status(404).send({ message: INVALID_LIKES_DATA });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
@@ -66,7 +64,6 @@ module.exports.dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') return res.status(400).send({ message: CARD_NOT_FOUND });
-      if (err.name === 'ValidationError') return res.status(400).send({ message: INVALID_LIKES_DATA });
       return res.status(500).send({ message: 'Ошибка по умолчанию' });
     });
 };
