@@ -40,7 +40,7 @@ module.exports.getUserById = (req, res) => {
 
 module.exports.getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.send(users))
+    .then((users) => res.status(HTTP_STATUS_OK).send(users))
     .catch(() => res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR }));
 };
 
@@ -48,7 +48,7 @@ module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
+    .then((user) => res.status(HTTP_STATUS_OK).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_UPDATE });
       return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
@@ -59,7 +59,7 @@ module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
+    .then((user) => res.status(HTTP_STATUS_OK).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_AVATAR_DATA });
       return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
