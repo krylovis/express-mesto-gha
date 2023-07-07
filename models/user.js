@@ -1,23 +1,24 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const { WRONG_EMAIL_FORMAT } = require('../utils/constants');
+const { DEFAULT_NAME, DEFAULT_ABOUT, DEFAULT_AVATAR } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: 'Жак-Ив Кусто',
+    default: DEFAULT_NAME,
     minlength: 2,
     maxlength: 30,
   },
   about: {
     type: String,
-    default: 'Исследователь',
+    default: DEFAULT_ABOUT,
     minlength: 2,
     maxlength: 30,
   },
   avatar: {
     type: String,
-    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    default: DEFAULT_AVATAR,
   },
   email: {
     type: String,
