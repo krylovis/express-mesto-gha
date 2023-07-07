@@ -18,20 +18,12 @@ const {
 
 module.exports.createUser = (req, res) => {
   const {
-    name,
-    about,
-    avatar,
-    password,
-    email,
+    name, about, avatar, password, email,
   } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      name,
-      password: hash,
-      about,
-      avatar,
-      email,
+      name, about, avatar, email, password: hash,
     }))
     .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
     .catch((err) => {
