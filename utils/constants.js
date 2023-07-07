@@ -1,4 +1,4 @@
-const http2 = require('node:http2');
+const http2 = require('http2');
 
 const { constants } = http2;
 const {
@@ -34,3 +34,5 @@ module.exports.INVALID_CARD_DATA = 'Переданы некорректные д
 module.exports.INVALID_LIKES_DATA = 'Переданы некорректные данные для постановки/снятии лайка';
 module.exports.CARD_NOT_FOUND = 'Карточка с указанным ID не найдена';
 module.exports.CARD_NONEXISTENT = 'Передан несуществующий ID карточки';
+
+module.exports.WRONG_EMAIL_FORMAT = 'Неправильный формат почты';
