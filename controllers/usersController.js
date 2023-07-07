@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 const {
   HTTP_STATUS_OK,
@@ -24,13 +25,14 @@ module.exports.createUser = (req, res) => {
     email,
   } = req.body;
 
-  User.create({
-    name,
-    about,
-    avatar,
-    password,
-    email,
-  })
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name,
+      password: hash,
+      about,
+      avatar,
+      email,
+    }))
     .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
