@@ -6,6 +6,7 @@ const {
   HTTP_STATUS_CREATED,
 
   HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
 
   HTTP_STATUS_INTERNAL_SERVER_ERROR,
@@ -16,6 +17,7 @@ module.exports = {
   HTTP_STATUS_CREATED,
 
   HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
 
   HTTP_STATUS_INTERNAL_SERVER_ERROR,
@@ -40,3 +42,5 @@ module.exports.CARD_NOT_FOUND = 'Карточка с указанным ID не 
 module.exports.CARD_NONEXISTENT = 'Передан несуществующий ID карточки';
 
 module.exports.WRONG_EMAIL_FORMAT = 'Неправильный формат почты';
+module.exports.WRONG_EMAIL_OR_PASSWORD = 'Неправильные почта или пароль';
+module.exports.CORRECT_DATA = 'Всё верно!';
