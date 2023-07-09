@@ -11,6 +11,7 @@ const {
   INVALID_CARD_DATA,
   CARD_NOT_FOUND,
   CARD_NONEXISTENT,
+  NO_RIGHTS_TO_DELETE,
 } = require('../utils/constants');
 
 module.exports.getCards = (req, res) => {
@@ -36,6 +37,7 @@ module.exports.deleteCard = (req, res) => {
   Cards.findByIdAndRemove(req.params.id)
     .then((card) => {
       if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
+      if (card.owner !== req.user._id) throw new Error(NO_RIGHTS_TO_DELETE);
       return res.status(HTTP_STATUS_OK).send(card);
     })
     .catch((err) => {
