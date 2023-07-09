@@ -8,6 +8,7 @@ const {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
+  HTTP_STATUS_CONFLICT,
 
   HTTP_STATUS_INTERNAL_SERVER_ERROR,
 } = constants;
@@ -19,6 +20,7 @@ module.exports = {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
+  HTTP_STATUS_CONFLICT,
 
   HTTP_STATUS_INTERNAL_SERVER_ERROR,
 };
@@ -35,6 +37,7 @@ module.exports.INVALID_USER_UPDATE = 'Переданы некорректные 
 module.exports.INVALID_AVATAR_DATA = ' Переданы некорректные данные при обновлении аватара';
 module.exports.USER_NOT_FOUND = 'Пользователь с указанным ID не найден';
 module.exports.USER_NONEXISTENT = 'Передан несуществующий ID пользователя';
+module.exports.USER_ALREADY_EXISTS = 'Пользователь уже существует';
 
 module.exports.INVALID_CARD_DATA = 'Переданы некорректные данные при создании карточки';
 module.exports.INVALID_LIKES_DATA = 'Переданы некорректные данные для постановки/снятии лайка';

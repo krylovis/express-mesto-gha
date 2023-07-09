@@ -8,6 +8,7 @@ const {
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
+  HTTP_STATUS_CONFLICT,
   HTTP_STATUS_INTERNAL_SERVER_ERROR,
 
   DEFAULT_ERROR,
@@ -16,6 +17,7 @@ const {
   INVALID_AVATAR_DATA,
   USER_NOT_FOUND,
   USER_NONEXISTENT,
+  USER_ALREADY_EXISTS,
 } = require('../utils/constants');
 
 module.exports.createUser = (req, res) => {
@@ -23,11 +25,20 @@ module.exports.createUser = (req, res) => {
     name, about, avatar, password, email,
   } = req.body;
 
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
-    .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
+  if (!email || !password) {
+    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
+  }
+
+  return User.findOne({ email })
+    .then((findUser) => {
+      if (findUser) return res.status(HTTP_STATUS_CONFLICT).send({ message: USER_ALREADY_EXISTS });
+
+      return bcrypt.hash(password, 10)
+        .then((hash) => User.create({
+          name, about, avatar, email, password: hash,
+        }))
+        .then((user) => res.status(HTTP_STATUS_CREATED).send(user));
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
       return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
