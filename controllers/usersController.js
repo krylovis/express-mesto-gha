@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 const {
   HTTP_STATUS_OK,
@@ -81,9 +81,9 @@ module.exports.login = (req, res) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
-        maxAge: '7d', httpOnly: true, sameSite: true,
+        httpOnly: true, sameSite: true,
       });
-      return res.status(HTTP_STATUS_OK).send(token);
+      return res.status(HTTP_STATUS_OK).send({ token });
     })
     .catch((err) => {
       res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
