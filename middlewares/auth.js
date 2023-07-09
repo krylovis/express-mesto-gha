@@ -5,11 +5,9 @@ const handleAuthError = (res) => {
 };
 
 module.exports = (req, res, next) => {
-  const { authorization } = req.headers;
+  const token = req.cookies.jwt;
+  if (!token) handleAuthError(res);
 
-  if (!authorization) handleAuthError(res);
-
-  const token = authorization;
   let payload;
   try {
     payload = jwt.verify(token, 'super-strong-secret');
