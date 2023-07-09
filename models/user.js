@@ -35,12 +35,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
 });
 
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email })
+    .select('+password')
     .then((user) => {
       if (!user) return Promise.reject(new Error(WRONG_EMAIL_OR_PASSWORD));
       return bcrypt.compare(password, user.password)
