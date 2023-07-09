@@ -46,4 +46,3 @@ module.exports.CARD_NONEXISTENT = 'Передан несуществующий I
 
 module.exports.WRONG_EMAIL_FORMAT = 'Неправильный формат почты';
 module.exports.WRONG_EMAIL_OR_PASSWORD = 'Неправильные почта или пароль';
-module.exports.CORRECT_DATA = 'Всё верно!';

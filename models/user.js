@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
 const {
-  WRONG_EMAIL_FORMAT, WRONG_EMAIL_OR_PASSWORD, CORRECT_DATA
+  WRONG_EMAIL_FORMAT, WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
 const { DEFAULT_NAME, DEFAULT_ABOUT, DEFAULT_AVATAR } = require('../utils/constants');
 
