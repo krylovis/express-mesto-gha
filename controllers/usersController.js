@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../utils/jwt');
 const User = require('../models/user');
 
 const {
@@ -90,7 +90,7 @@ module.exports.login = (req, res) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      const token = generateToken(user._id);
       res.cookie('jwt', token, {
         httpOnly: true, sameSite: true,
       });
