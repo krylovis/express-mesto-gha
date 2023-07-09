@@ -29,6 +29,7 @@ module.exports.DEFAULT_NAME = 'Жак-Ив Кусто';
 module.exports.DEFAULT_ABOUT = 'Исследователь';
 module.exports.DEFAULT_AVATAR = 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png';
 
+module.exports.NEEDED_AUTHORIZATION = 'Необходима авторизация';
 module.exports.PAGE_NOT_FOUND = 'Страница не найдена';
 module.exports.DEFAULT_ERROR = 'Ошибка по умолчанию';
 
