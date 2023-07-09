@@ -38,7 +38,7 @@ module.exports.deleteCard = (req, res) => {
   Cards.findById(req.params.id)
     .then((card) => {
       if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
-      if (card.owner !== req.user._id) {
+      if (card.owner.toString() !== req.user._id) {
         return res.status(HTTP_STATUS_FORBIDDEN).send({ message: NO_RIGHTS_TO_DELETE });
       }
       return Cards.findByIdAndRemove(req.params.id);
