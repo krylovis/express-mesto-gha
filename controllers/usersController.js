@@ -6,6 +6,7 @@ const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
   HTTP_STATUS_BAD_REQUEST,
+  HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
   HTTP_STATUS_CONFLICT,
   HTTP_STATUS_INTERNAL_SERVER_ERROR,
@@ -17,6 +18,7 @@ const {
   USER_NOT_FOUND,
   USER_NONEXISTENT,
   USER_ALREADY_EXISTS,
+  WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
 
 module.exports.createUser = (req, res) => {
@@ -110,7 +112,7 @@ module.exports.login = (req, res) => {
       });
       return res.status(HTTP_STATUS_OK).send({ token });
     })
-    .catch((err) => {
-      res.status(HTTP_STATUS_BAD_REQUEST).send({ message: err.message });
+    .catch(() => {
+      res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: WRONG_EMAIL_OR_PASSWORD });
     });
 };
