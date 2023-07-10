@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwt');
 const User = require('../models/user');
-const { validateEmail } = require('../utils/validate');
 
 const {
   HTTP_STATUS_OK,
@@ -86,10 +85,6 @@ module.exports.login = (req, res, next) => {
 
   if (!email || !password) {
     return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
-  }
-
-  if (!validateEmail(email)) {
-    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: WRONG_EMAIL_OR_PASSWORD });
   }
 
   return User.findUserByCredentials(email, password)
