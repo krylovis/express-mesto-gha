@@ -63,6 +63,12 @@ module.exports.getUsers = (req, res) => {
     .catch(() => res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR }));
 };
 
+module.exports.getUser = (req, res) => {
+  User.findById(req.user.id)
+    .then((user) => res.status(HTTP_STATUS_OK).send(user))
+    .catch(() => res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR }));
+};
+
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
 
