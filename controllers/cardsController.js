@@ -38,7 +38,7 @@ module.exports.deleteCard = (req, res) => {
   Cards.findById(req.params.id)
     .then((findCard) => {
       if (!findCard) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
-      if (findCard.owner.toString() !== req.user._id) {
+      if (findCard.owner.toString() !== req.user.id) {
         return res.status(HTTP_STATUS_FORBIDDEN).send({ message: NO_RIGHTS_TO_DELETE });
       }
       return Cards.findByIdAndRemove(req.params.id)
@@ -48,20 +48,6 @@ module.exports.deleteCard = (req, res) => {
       if (err.name === 'CastError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: CARD_NOT_FOUND });
       return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
     });
-
-  // Cards.findByIdAndRemove(req.params.id)
-  //   .then((card) => {
-  //     if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
-  //     if (card.owner !== req.user._id) {
-  //       res.status(HTTP_STATUS_FORBIDDEN);
-  //       throw new Error(NO_RIGHTS_TO_DELETE);
-  //     }
-  //     return res.status(HTTP_STATUS_OK).send(card);
-  //   })
-  //   .catch((err) => {
-  //     if (err.name === 'CastError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: CARD_NOT_FOUND });
-  //     return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
-  //   });
 };
 
 module.exports.likeCard = (req, res) => {
