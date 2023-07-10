@@ -10,19 +10,14 @@ const {
   HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
   HTTP_STATUS_CONFLICT,
-  HTTP_STATUS_INTERNAL_SERVER_ERROR,
 
-  DEFAULT_ERROR,
   INVALID_USER_DATA,
-  INVALID_USER_UPDATE,
-  INVALID_AVATAR_DATA,
-  USER_NOT_FOUND,
   USER_NONEXISTENT,
   USER_ALREADY_EXISTS,
   WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, password, email,
   } = req.body;
@@ -47,58 +42,46 @@ module.exports.createUser = (req, res) => {
           email: user.email,
         }));
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
-      return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
-    });
+    .catch((err) => next(err));
 };
 
-module.exports.getUserById = (req, res) => {
+module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: USER_NONEXISTENT });
       return res.status(HTTP_STATUS_OK).send(user);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: USER_NOT_FOUND });
-      return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
-    });
+    .catch((err) => next(err));
 };
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(HTTP_STATUS_OK).send(users))
-    .catch(() => res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR }));
+    .catch((err) => next(err));
 };
 
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   User.findById(req.user.id)
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch(() => res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR }));
+    .catch((err) => next(err));
 };
 
-module.exports.updateUser = (req, res) => {
+module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user.id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => {
-      if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_UPDATE });
-      return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
-    });
+    .catch((err) => next(err));
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(req.user.id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => {
-      if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_AVATAR_DATA });
-      return res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: DEFAULT_ERROR });
-    });
+    .catch((err) => next(err));
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -120,7 +103,5 @@ module.exports.login = (req, res) => {
       });
       return res.status(HTTP_STATUS_OK).send({ token });
     })
-    .catch((err) => {
-      res.status(HTTP_STATUS_BAD_REQUEST).send({ message: err.message });
-    });
+    .catch((err) => next(err));
 };
