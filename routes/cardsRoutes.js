@@ -3,11 +3,7 @@ const auth = require('../middlewares/auth');
 const { createCardSchema, updateCardSchema } = require('../middlewares/joiSchemas');
 
 const {
-  getCards,
-  createCard,
-  deleteCard,
-  likeCard,
-  dislikeCard,
+  getCards, createCard, deleteCard, likeCard, dislikeCard,
 } = require('../controllers/cardsController');
 
 router.get('/', auth, getCards);

@@ -3,11 +3,7 @@ const auth = require('../middlewares/auth');
 const { getUserSchema, updateUserSchema, updateAvatarSchema } = require('../middlewares/joiSchemas');
 
 const {
-  getUserById,
-  getUsers,
-  getUser,
-  updateUser,
-  updateAvatar,
+  getUserById, getUsers, getUser, updateUser, updateAvatar,
 } = require('../controllers/usersController');
 
 router.get('/', auth, getUsers);
