@@ -94,6 +94,10 @@ module.exports.updateAvatar = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
+  }
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = generateToken(user._id);
@@ -103,6 +107,6 @@ module.exports.login = (req, res) => {
       return res.status(HTTP_STATUS_OK).send({ token });
     })
     .catch((err) => {
-      res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
+      res.status(HTTP_STATUS_BAD_REQUEST).send({ message: err.message });
     });
 };
