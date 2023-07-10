@@ -1,5 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 
+// User
 module.exports.createUserSchema = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
@@ -33,5 +34,20 @@ module.exports.updateUserSchema = celebrate({
 module.exports.updateAvatarSchema = celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().regex(/^(http|https):\/\/[^ "]+$/),
+  }),
+});
+
+// Card
+
+module.exports.createCardSchema = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    link: Joi.string().regex(/^(http|https):\/\/[^ "]+$/),
+  }),
+});
+
+module.exports.updateCardSchema = celebrate({
+  body: Joi.object().keys({
+    id: Joi.string().alphanum().length(24),
   }),
 });
