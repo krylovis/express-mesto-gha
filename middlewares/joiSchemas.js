@@ -18,7 +18,7 @@ module.exports.loginSchema = celebrate({
 });
 
 module.exports.getUserSchema = celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     id: Joi.string().alphanum().length(24),
   }),
 });
