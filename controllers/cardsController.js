@@ -24,9 +24,9 @@ module.exports.getCards = (req, res) => {
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
-  const { _id } = req.user;
+  const { id } = req.user;
 
-  Cards.create({ name, link, owner: _id })
+  Cards.create({ name, link, owner: id })
     .then((card) => res.status(HTTP_STATUS_CREATED).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_CARD_DATA });
