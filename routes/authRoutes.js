@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { createUser, login } = require('../controllers/usersController');
-const { createUserSchema } = require('../middlewares/joiSchemas');
+const { createUserSchema, loginSchema } = require('../middlewares/joiSchemas');
 
 router.post('/signup', createUserSchema, createUser);
-router.post('/signin', login);
+router.post('/signin', loginSchema, login);
 
 module.exports = router;
