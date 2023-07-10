@@ -16,3 +16,22 @@ module.exports.loginSchema = celebrate({
     password: Joi.string().required().min(6),
   }),
 });
+
+module.exports.getUserSchema = celebrate({
+  body: Joi.object().keys({
+    id: Joi.string().alphanum().length(24),
+  }),
+});
+
+module.exports.updateUserSchema = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+  }),
+});
+
+module.exports.updateAvatarSchema = celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().regex(/^(http|https):\/\/[^ "]+$/),
+  }),
+});
