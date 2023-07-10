@@ -42,7 +42,7 @@ module.exports.createUser = (req, res, next) => {
           email: user.email,
         }));
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.getUserById = (req, res, next) => {
@@ -51,26 +51,26 @@ module.exports.getUserById = (req, res, next) => {
       if (!user) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: USER_NONEXISTENT });
       return res.status(HTTP_STATUS_OK).send(user);
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(HTTP_STATUS_OK).send(users))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user.id)
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user.id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -78,7 +78,7 @@ module.exports.updateAvatar = (req, res, next) => {
 
   User.findByIdAndUpdate(req.user.id, { avatar }, { new: true, runValidators: true })
     .then((user) => res.status(HTTP_STATUS_OK).send(user))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {
@@ -103,5 +103,5 @@ module.exports.login = (req, res, next) => {
       });
       return res.status(HTTP_STATUS_OK).send({ token });
     })
-    .catch((err) => next(err));
+    .catch(next);
 };

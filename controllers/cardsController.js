@@ -14,7 +14,7 @@ module.exports.getCards = (req, res, next) => {
   Cards.find({})
     .populate('owner')
     .then((cards) => res.status(HTTP_STATUS_OK).send(cards))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.createCard = (req, res, next) => {
@@ -23,7 +23,7 @@ module.exports.createCard = (req, res, next) => {
 
   Cards.create({ name, link, owner: id })
     .then((card) => res.status(HTTP_STATUS_CREATED).send(card))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.deleteCard = (req, res, next) => {
@@ -36,7 +36,7 @@ module.exports.deleteCard = (req, res, next) => {
       return Cards.findByIdAndRemove(req.params.id)
         .then((card) => res.status(HTTP_STATUS_OK).send(card));
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {
@@ -49,7 +49,7 @@ module.exports.likeCard = (req, res, next) => {
       if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
       return res.status(HTTP_STATUS_OK).send(card);
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.dislikeCard = (req, res, next) => {
@@ -62,5 +62,5 @@ module.exports.dislikeCard = (req, res, next) => {
       if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
       return res.status(HTTP_STATUS_OK).send(card);
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
