@@ -49,4 +49,5 @@ module.exports.CARD_NOT_FOUND = 'Карточка с указанным ID не 
 module.exports.CARD_NONEXISTENT = 'Передан несуществующий ID карточки';
 
 module.exports.WRONG_EMAIL_FORMAT = 'Неправильный формат почты';
+module.exports.WRONG_LINK_FORMAT = 'Неправильный формат ссылки';
 module.exports.WRONG_EMAIL_OR_PASSWORD = 'Неправильные почта или пароль';

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const isEmail = require('validator/lib/isEmail');
+const validator = require('validator');
 const {
-  WRONG_EMAIL_FORMAT, WRONG_EMAIL_OR_PASSWORD,
+  WRONG_EMAIL_FORMAT, WRONG_EMAIL_OR_PASSWORD, WRONG_LINK_FORMAT,
 } = require('../utils/constants');
 const { DEFAULT_NAME, DEFAULT_ABOUT, DEFAULT_AVATAR } = require('../utils/constants');
 
@@ -22,13 +22,17 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: DEFAULT_AVATAR,
+    validate: {
+      validator: (value) => validator.isURL(value, { protocols: ['http', 'https'], require_tld: true, require_protocol: true }),
+      message: WRONG_LINK_FORMAT,
+    },
   },
   email: {
     type: String,
     required: true,
     unique: true,
     validate: {
-      validator: isEmail,
+      validator: (value) => validator.isEmail(value),
       message: WRONG_EMAIL_FORMAT,
     },
   },
