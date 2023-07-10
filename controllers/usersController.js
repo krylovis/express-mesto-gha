@@ -101,12 +101,12 @@ module.exports.updateAvatar = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  if (!validateEmail(email)) {
-    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: WRONG_EMAIL_OR_PASSWORD });
-  }
-
   if (!email || !password) {
     return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
+  }
+
+  if (!validateEmail(email)) {
+    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: WRONG_EMAIL_OR_PASSWORD });
   }
 
   return User.findUserByCredentials(email, password)
