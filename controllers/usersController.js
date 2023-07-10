@@ -5,12 +5,10 @@ const User = require('../models/user');
 const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
-  HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
   HTTP_STATUS_CONFLICT,
 
-  INVALID_USER_DATA,
   USER_NONEXISTENT,
   USER_ALREADY_EXISTS,
   WRONG_EMAIL_OR_PASSWORD,
@@ -20,10 +18,6 @@ module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, password, email,
   } = req.body;
-
-  if (!email || !password) {
-    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
-  }
 
   return User.findOne({ email })
     .then((findUser) => {
@@ -82,10 +76,6 @@ module.exports.updateAvatar = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(HTTP_STATUS_BAD_REQUEST).send({ message: INVALID_USER_DATA });
-  }
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
