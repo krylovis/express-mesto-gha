@@ -106,13 +106,16 @@ module.exports.login = (req, res) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      if (!user) {
+        return res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: WRONG_EMAIL_OR_PASSWORD });
+      }
       const token = generateToken(user.id);
       res.cookie('jwt', token, {
         httpOnly: true, sameSite: true,
       });
       return res.status(HTTP_STATUS_OK).send({ token });
     })
-    .catch(() => {
-      res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: WRONG_EMAIL_OR_PASSWORD });
+    .catch((err) => {
+      res.status(HTTP_STATUS_BAD_REQUEST).send({ message: err.message });
     });
 };
