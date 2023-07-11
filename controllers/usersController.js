@@ -4,15 +4,12 @@ const User = require('../models/user');
 
 const ConflictError = require('../custom-errors/ConflictError');
 const NotFoundError = require('../custom-errors/NotFoundError');
-const UnauthorizedError = require('../custom-errors/UnauthorizedError');
-
 const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
 
   USER_NONEXISTENT,
   USER_ALREADY_EXISTS,
-  WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
 
 module.exports.createUser = (req, res, next) => {
@@ -78,7 +75,6 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      if (!user) throw new UnauthorizedError(WRONG_EMAIL_OR_PASSWORD);
       const token = generateToken(user.id);
       res.cookie('jwt', token, {
         httpOnly: true, sameSite: true,

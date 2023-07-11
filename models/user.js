@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
+const UnauthorizedError = require('../custom-errors/UnauthorizedError');
+
 const {
   WRONG_EMAIL_FORMAT, WRONG_EMAIL_OR_PASSWORD, WRONG_LINK_FORMAT,
 } = require('../utils/constants');
@@ -49,10 +51,10 @@ userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email })
     .select('+password')
     .then((user) => {
-      if (!user) return null;
+      if (!user) throw new UnauthorizedError(WRONG_EMAIL_OR_PASSWORD);
       return bcrypt.compare(password, user.password)
         .then((matched) => {
-          if (!matched) return Promise.reject(new Error(WRONG_EMAIL_OR_PASSWORD));
+          if (!matched) throw new UnauthorizedError(WRONG_EMAIL_OR_PASSWORD);
           return user;
         });
     });
