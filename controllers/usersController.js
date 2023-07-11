@@ -7,10 +7,8 @@ const {
   HTTP_STATUS_CREATED,
   HTTP_STATUS_UNAUTHORIZED,
   HTTP_STATUS_NOT_FOUND,
-  HTTP_STATUS_CONFLICT,
 
   USER_NONEXISTENT,
-  USER_ALREADY_EXISTS,
   WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
 
@@ -19,22 +17,17 @@ module.exports.createUser = (req, res, next) => {
     name, about, avatar, password, email,
   } = req.body;
 
-  return User.findOne({ email })
-    .then((findUser) => {
-      if (findUser) return res.status(HTTP_STATUS_CONFLICT).send({ message: USER_ALREADY_EXISTS });
-
-      return bcrypt.hash(password, 10)
-        .then((hash) => User.create({
-          name, about, avatar, email, password: hash,
-        }))
-        .then((user) => res.status(HTTP_STATUS_CREATED).send({
-          _id: user._id,
-          name: user.name,
-          about: user.about,
-          avatar: user.avatar,
-          email: user.email,
-        }));
-    })
+  return bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+    .then((user) => res.status(HTTP_STATUS_CREATED).send({
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      email: user.email,
+    }))
     .catch(next);
 };
 
