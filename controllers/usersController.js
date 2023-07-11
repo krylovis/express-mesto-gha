@@ -12,6 +12,16 @@ const {
   USER_ALREADY_EXISTS,
 } = require('../utils/constants');
 
+const getUserData = (user) => (
+  {
+    _id: user._id,
+    name: user.name,
+    about: user.about,
+    avatar: user.avatar,
+    email: user.email,
+  }
+);
+
 module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, password, email,
@@ -21,13 +31,7 @@ module.exports.createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .then((user) => res.status(HTTP_STATUS_CREATED).send({
-      _id: user._id,
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar,
-      email: user.email,
-    }))
+    .then((user) => res.status(HTTP_STATUS_CREATED).send(getUserData(user)))
     .catch((err) => {
       if (err.code === 11000) throw new ConflictError(USER_ALREADY_EXISTS);
     })
@@ -76,11 +80,10 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = generateToken(user.id);
-      res
-        .cookie('jwt', token, {
-          httpOnly: true, sameSite: true,
-        })
-        .end();
+      res.cookie('jwt', token, {
+        httpOnly: true, sameSite: true,
+      });
+      return res.status(HTTP_STATUS_OK).send(getUserData(user));
     })
     .catch(next);
 };
