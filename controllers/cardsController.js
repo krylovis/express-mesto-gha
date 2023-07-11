@@ -3,12 +3,13 @@ const Cards = require('../models/card');
 const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
-  HTTP_STATUS_NOT_FOUND,
   HTTP_STATUS_FORBIDDEN,
 
   CARD_NONEXISTENT,
   NO_RIGHTS_TO_DELETE,
 } = require('../utils/constants');
+
+const NotFoundError = require('../custom-errors/NotFoundError');
 
 module.exports.getCards = (req, res, next) => {
   Cards.find({})
@@ -29,7 +30,7 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Cards.findById(req.params.id)
     .then((findCard) => {
-      if (!findCard) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
+      if (!findCard) throw new NotFoundError(CARD_NONEXISTENT);
       if (findCard.owner.toString() !== req.user.id) {
         return res.status(HTTP_STATUS_FORBIDDEN).send({ message: NO_RIGHTS_TO_DELETE });
       }
@@ -46,7 +47,7 @@ module.exports.likeCard = (req, res, next) => {
     { new: true },
   )
     .then((card) => {
-      if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
+      if (!card) throw new NotFoundError(CARD_NONEXISTENT);
       return res.status(HTTP_STATUS_OK).send(card);
     })
     .catch(next);
@@ -59,7 +60,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { new: true },
   )
     .then((card) => {
-      if (!card) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: CARD_NONEXISTENT });
+      if (!card) throw new NotFoundError(CARD_NONEXISTENT);
       return res.status(HTTP_STATUS_OK).send(card);
     })
     .catch(next);
