@@ -1,15 +1,15 @@
 const Cards = require('../models/card');
 
+const NotFoundError = require('../custom-errors/NotFoundError');
+const ForbiddenError = require('../custom-errors/ForbiddenError');
+
 const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
-  HTTP_STATUS_FORBIDDEN,
 
   CARD_NONEXISTENT,
   NO_RIGHTS_TO_DELETE,
 } = require('../utils/constants');
-
-const NotFoundError = require('../custom-errors/NotFoundError');
 
 module.exports.getCards = (req, res, next) => {
   Cards.find({})
@@ -32,7 +32,7 @@ module.exports.deleteCard = (req, res, next) => {
     .then((findCard) => {
       if (!findCard) throw new NotFoundError(CARD_NONEXISTENT);
       if (findCard.owner.toString() !== req.user.id) {
-        return res.status(HTTP_STATUS_FORBIDDEN).send({ message: NO_RIGHTS_TO_DELETE });
+        throw new ForbiddenError(NO_RIGHTS_TO_DELETE);
       }
       return Cards.findByIdAndRemove(req.params.id)
         .then((card) => res.status(HTTP_STATUS_OK).send(card));
