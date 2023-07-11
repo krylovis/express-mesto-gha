@@ -1,23 +1,17 @@
 const jwt = require('jsonwebtoken');
+const UnauthorizedError = require('../custom-errors/UnauthorizedError');
 
-const {
-  HTTP_STATUS_UNAUTHORIZED,
-  NEEDED_AUTHORIZATION,
-} = require('../utils/constants');
-
-const handleAuthError = (res) => {
-  res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: NEEDED_AUTHORIZATION });
-};
+const { NEEDED_AUTHORIZATION } = require('../utils/constants');
 
 module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
-  if (!token) handleAuthError(res);
+  if (!token) throw new UnauthorizedError(NEEDED_AUTHORIZATION);
 
   let payload;
   try {
     payload = jwt.verify(token, 'super-strong-secret');
   } catch (err) {
-    handleAuthError(res);
+    throw new UnauthorizedError(NEEDED_AUTHORIZATION);
   }
 
   req.user = payload;
