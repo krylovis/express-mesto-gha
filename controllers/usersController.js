@@ -9,8 +9,11 @@ const {
   HTTP_STATUS_NOT_FOUND,
 
   USER_NONEXISTENT,
+  USER_ALREADY_EXISTS,
   WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
+
+const ConflictError = require('../custom-errors/ConflictError');
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -28,6 +31,9 @@ module.exports.createUser = (req, res, next) => {
       avatar: user.avatar,
       email: user.email,
     }))
+    .catch((err) => {
+      if (err.code === 11000) throw new ConflictError(USER_ALREADY_EXISTS);
+    })
     .catch(next);
 };
 
