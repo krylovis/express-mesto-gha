@@ -20,20 +20,20 @@ module.exports.loginSchema = celebrate({
 
 module.exports.getUserSchema = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().alphanum().length(24),
+    id: Joi.string().required().hex().length(24),
   }),
 });
 
 module.exports.updateUserSchema = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
   }),
 });
 
 module.exports.updateAvatarSchema = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().regex(/^(http|https):\/\/[^ "]+$/),
+    avatar: Joi.string().required().regex(/^(http|https):\/\/[^ "]+$/),
   }),
 });
 
@@ -47,6 +47,6 @@ module.exports.createCardSchema = celebrate({
 
 module.exports.updateCardSchema = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().required().alphanum().length(24),
+    id: Joi.string().required().hex().length(24),
   }),
 });
