@@ -6,7 +6,6 @@ const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
   HTTP_STATUS_UNAUTHORIZED,
-  HTTP_STATUS_NOT_FOUND,
 
   USER_NONEXISTENT,
   USER_ALREADY_EXISTS,
@@ -14,6 +13,7 @@ const {
 } = require('../utils/constants');
 
 const ConflictError = require('../custom-errors/ConflictError');
+const NotFoundError = require('../custom-errors/NotFoundError');
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -40,7 +40,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
-      if (!user) return res.status(HTTP_STATUS_NOT_FOUND).send({ message: USER_NONEXISTENT });
+      if (!user) throw new NotFoundError(USER_NONEXISTENT);
       return res.status(HTTP_STATUS_OK).send(user);
     })
     .catch(next);
