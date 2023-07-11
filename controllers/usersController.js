@@ -33,9 +33,9 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => res.status(HTTP_STATUS_CREATED).send(getUserData(user)))
     .catch((err) => {
-      if (err.code === 11000) throw new ConflictError(USER_ALREADY_EXISTS);
-    })
-    .catch(next);
+      if (err.code === 11000) return next(new ConflictError(USER_ALREADY_EXISTS));
+      return next(err);
+    });
 };
 
 module.exports.getUserById = (req, res, next) => {
