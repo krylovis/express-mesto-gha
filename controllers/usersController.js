@@ -2,6 +2,10 @@ const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwt');
 const User = require('../models/user');
 
+const ConflictError = require('../custom-errors/ConflictError');
+const NotFoundError = require('../custom-errors/NotFoundError');
+const UnauthorizedError = require('../custom-errors/UnauthorizedError');
+
 const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
@@ -10,10 +14,6 @@ const {
   USER_ALREADY_EXISTS,
   WRONG_EMAIL_OR_PASSWORD,
 } = require('../utils/constants');
-
-const ConflictError = require('../custom-errors/ConflictError');
-const NotFoundError = require('../custom-errors/NotFoundError');
-const UnauthorizedError = require('../custom-errors/UnauthorizedError');
 
 module.exports.createUser = (req, res, next) => {
   const {
